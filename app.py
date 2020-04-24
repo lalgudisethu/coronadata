@@ -12,28 +12,22 @@ app = Flask(__name__)
 
 @app.route('/')
 def dynamic_page():
-   	pat1='/wiki/2020_coronavirus_pandemic_'
+	pat1='/wiki/2020_coronavirus_pandemic_'
 	pat2='/wiki/2019%E2%80%9320_coronavirus_pandemic_in_mainland_China'
-
 	pat3='/wiki/2020_coronavirus_pandemic_in_India'
-
 	x=datetime.datetime.now()
 	x=x.strftime('%x')
-	x=x.replace('/','')
-
+	x=x.replace('/','')	
 	tempname="mydata"+x
-
 	content = wikipedia.page("Template:2019–20_coronavirus_pandemic_data").html()
 	soup=BeautifulSoup(content,"html.parser")
 	i=1
-
 	outfile=open(tempname+'.csv', 'w', newline='')
 	writer = csv.writer(outfile)
 	writer.writerow(["COUNTRY", "CASES", "DEATHS",'RECOVERED'])
 	temp=[]
-
 	for a in soup.find_all('a',href=True,text=True):
-		if re.search(pat1,a['href']) or re.search(pat2,a['href']) or re.search(pat3,a['href']) :
+		if re.search(pat1,a['href']) or re.search(pat2,a['href']) or re.search(pat3,a['href']):
 			parent=a.parent
 			if ' ' in a.string:
 				a.string=a.string.replace(' ','')
@@ -48,9 +42,9 @@ def dynamic_page():
 						else:
 							sib.string=sib.string.rstrip('\n')
 						if sib.string.isdigit():
-								temp.append(int(sib.string))
+							temp.append(int(sib.string))
 						else:
-								temp.append(0)
+							temp.append(0)
 			writer.writerow(temp)
 			outfile.flush()  # flush() had no effect
 			if i>60:
@@ -58,11 +52,7 @@ def dynamic_page():
 			temp.clear()
 		i=i+1
 	outfile.close()
-
-	
 	df=pd.read_csv(tempname+'.csv',encoding="ISO-8859-1")
-
-
 	df.loc[df['COUNTRY'] == 'UnitedStates', 'COUNTRY'] = 'USA'
 	df.loc[df['COUNTRY'] == 'UnitedKingdom', 'COUNTRY'] = 'UK'
 	df.loc[df['COUNTRY'] == 'Germany', 'COUNTRY'] = 'Germ'
@@ -72,7 +62,6 @@ def dynamic_page():
 	df.loc[df['COUNTRY'] == 'Canada', 'COUNTRY'] = 'Cana'
 
 	plt.figure(figsize=(12,5))
-
 	plt.plot(df.COUNTRY,df.CASES,'r.-',label='CASES')
 	plt.plot(df.COUNTRY,df.DEATHS,'g.-',label='DEATHS')
 	plt.plot(df.COUNTRY,df.RECOVERED,'b.-',label='RECOVERED')
@@ -82,5 +71,10 @@ def dynamic_page():
 	plt.legend()
 	plt.show()
 	return "Chart Plotted"
+
+if __name__ == '__main__':
+	app.run(debug=True)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
