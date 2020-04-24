@@ -13,7 +13,6 @@ app = Flask(__name__)
 @app.route('/')
 def dynamic_page():
    	pat1='/wiki/2020_coronavirus_pandemic_'
-
 	pat2='/wiki/2019%E2%80%9320_coronavirus_pandemic_in_mainland_China'
 
 	pat3='/wiki/2020_coronavirus_pandemic_in_India'
@@ -82,6 +81,6 @@ def dynamic_page():
 	plt.ylabel('Numbers')
 	plt.legend()
 	plt.show()
-
+	return "Chart Plotted"
 if __name__ == '__main__':
     app.run(debug=True)
