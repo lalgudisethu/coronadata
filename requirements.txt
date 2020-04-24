@@ -1,6 +1,5 @@
 argparse==1.2.1
 apyori==1.1.2
-distribute==0.6.24
 gunicorn==19.9.0
 attrs==19.3.0
 beautifulsoup4==4.8.2
@@ -26,11 +25,11 @@ jmespath==0.9.4
 joblib==0.14.1
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
-matplotlib==3.1.2
 nltk==3.4.5
 numpy==1.18.1
 oauthlib==3.1.0
 pandas==0.25.3
+matplotlib==3.1.2
 pybind11==2.4.3
 pyparsing==2.4.6
 PySocks==1.7.1
